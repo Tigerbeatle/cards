@@ -1,20 +1,19 @@
 package main
 
 import (
-	//"github.com/gorilla/context"
-	"context"
-	"log"
 	"github.com/tigerbeatle/cards/models"
 	"github.com/justinas/alice"
 	"github.com/tigerbeatle/cards/middleware"
-	routes "github.com/tigerbeatle/cards/routes"
-	"github.com/tigerbeatle/cards/controllers"
+	"github.com/tigerbeatle/cards/routes"
+	controller "github.com/tigerbeatle/cards/controllers"
+	"net/http"
+	"log"
 )
 
 func main() {
 	
 	db := models.NewMongoDB()
-
+/*
 	collection := db.Collection("test")
 
 	res, err := collection.InsertOne(context.Background(), map[string]string{"hello000ttt": "world Tiger"})
@@ -23,14 +22,23 @@ func main() {
 
 log.Println("id:",id)
 
-
+*/
 
 	// Lets set some routes
 
 	commonHandlers := alice.New(middleware.RecoverHandler, middleware.AcceptHandler)
 	router := routes.NewRouter()
 
-	router.Get("/", commonHandlers.ThenFunc(controllers.HomeHandler))
+	appH := controller.HomeContext{db.Database}
+
+	router.Get("/", commonHandlers.ThenFunc(appH.HomeHandler))
+
+
+	log.Println("API Starting...")
+
+	http.ListenAndServe(":8001", router)
+
+
 
 /*
 

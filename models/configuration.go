@@ -12,6 +12,12 @@ type Configuration struct {
 	Pepper string
 }
 
+type BasicJSONReturn struct {
+	ReturnType   string          `json:"ReturnType"        bson:"ReturnType"`
+	ReturnStatus string          `json:"ReturnStatus"        bson:"ReturnStatus"`
+	Payload      string          `json:"payLoad"        bson:"payLoad"`
+}
+
 
 func  GetSecret() string {
 	file, _ := os.Open("conf/conf.json")

@@ -1,6 +1,6 @@
-// Package mongo provides mongo connectivity support.
+// Package mongoHelper provides mongoHelper connectivity support.
 
-package mongo
+package mongoHelper
 
 import (
 	"context"
@@ -20,11 +20,11 @@ func Startup() error {
 		return err
 	}
 
-	// set up conn to mongo
+	// set up conn to mongoHelper
 	client, err := mongo.NewClientFromConnString(mongoConfig)
 
 	if err != nil { log.Fatal(err) }
 	err = client.Connect(context.TODO())
 	if err != nil { log.Fatal(err) }
-
+return err
 }
