@@ -29,9 +29,17 @@ log.Println("id:",id)
 	commonHandlers := alice.New(middleware.RecoverHandler, middleware.AcceptHandler)
 	router := routes.NewRouter()
 
+	appA := controller.AccountContext{db.Database}
 	appH := controller.HomeContext{db.Database}
 
 	router.Get("/", commonHandlers.ThenFunc(appH.HomeHandler))
+	router.Post("/api/1.0/accounts/register", commonHandlers.Append(middleware.ContentTypeHandler, middleware.BodyHandler(models.User{})).ThenFunc(appA.CreateUser))
+	router.Post("/api/1.0/accounts/login", commonHandlers.Append(middleware.ContentTypeHandler, middleware.BodyHandler(models.User{})).ThenFunc(appA.Login))
+
+	// TODO: add create profile
+
+	//router.Get("/api/1.0/accounts/user", commonHandlers.Append(middleware.AuthorizationHandler).ThenFunc(appA.UserProfile))
+
 
 
 	log.Println("API Starting...")
